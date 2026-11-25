@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load i18n markdown_extras %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="max-w-6xl mx-auto px-6 py-20 md:py-28 flex flex-col md:flex-row items-center gap-12">
+  <div class="flex-1">
+    <p class="text-[#E61D4E] font-semibold tracking-wide uppercase text-sm mb-3">
+      {{ profile.location|default:"Phnom Penh, Cambodia" }}
+    </p>
+    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white leading-tight">
+      {{ profile.full_name|default:"Seanghort Born" }}
+    </h1>
+    <p class="text-xl text-slate-700 dark:text-slate-300 mt-4 font-medium">
+      {{ profile.headline|default:"Ph.D. in Computer Science | Researcher, Lecturer & Tech Entrepreneur" }}
+    </p>
+    <p class="text-slate-600 dark:text-slate-400 mt-6 leading-relaxed max-w-2xl">
+      {{ profile.short_bio|default:"Log into /en/portal-manage/ to customize your profile in English, Khmer, and French." }}
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4 mt-8">
+      {% if profile.resume_pdf %}
+      <a href="{{ profile.resume_pdf.url }}" target="_blank" class="px-6 py-3 rounded-xl bg-[#E61D4E] text-white font-semibold hover:opacity-90 transition shadow-sm">
+        {% trans "Download CV" %}
+      </a>
+      {% endif %}
+      {% if profile.github_url %}
+      <a href="{{ profile.github_url }}" target="_blank" class="px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-[#E61D4E] text-slate-700 dark:text-slate-200 transition">
+        GitHub
+      </a>
+      {% endif %}
+      {% if profile.orcid_url %}
+      <a href="{{ profile.orcid_url }}" target="_blank" class="px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-[#E61D4E] text-slate-700 dark:text-slate-200 transition">
+        ORCID
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Markdown About Section -->
+{% if profile.about_markdown %}
+<section id="about" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200 dark:border-slate-800/80">
+  <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">{% trans "About Me" %}</h2>
+  <div class="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
+    {{ profile.about_markdown|render_markdown }}
+  </div>
+</section>
+{% endif %}
+
+<!-- Dynamic Projects Section -->
+<section id="projects" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200 dark:border-slate-800/80">
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white">{% trans "Featured Projects" %}</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">{% trans "Filter projects by domain" %}</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button hx-get="{% url 'hx_filter_projects' %}?category=ALL"
+              hx-target="#project-grid"
+              class="px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-200 dark:bg-slate-800 hover:bg-[#E61D4E] hover:text-white text-slate-800 dark:text-white transition cursor-pointer">
+        {% trans "All" %}
+      </button>
+      {% for code, label in categories %}
+      <button hx-get="{% url 'hx_filter_projects' %}?category={{ code }}"
+              hx-target="#project-grid"
+              class="px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-200 dark:bg-slate-800 hover:bg-[#E61D4E] hover:text-white text-slate-800 dark:text-white transition cursor-pointer">
+        {{ label }}
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="project-grid">
+    {% include "partials/project_list.html" %}
+  </div>
+</section>
+
+<!-- Latest Blogs Section -->
+<section id="blogs" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200 dark:border-slate-800/80">
+  <div class="flex items-end justify-between mb-10">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white">{% trans "Latest Blogs" %}</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">{% trans "Thoughts on AI, Khmer NLP, software engineering, and research" %}</p>
+    </div>
+    <a href="{% url 'blog_list' %}" class="text-sm font-semibold text-[#E61D4E] hover:underline">
+      {% trans "View All Posts" %} &rarr;
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% for post in recent_blogs %}
+    <article class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden hover:border-[#E61D4E] transition shadow-sm flex flex-col justify-between">
+      <div>
+        {% if post.cover_image %}
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-44 object-cover">
+        {% endif %}
+        <div class="p-6">
+          <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-2">
+            <span>{{ post.published_at|date:"M d, Y" }}</span>
+            <span>&bull;</span>
+            <span>{{ post.reading_time_minutes }} {% trans "min read" %}</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white leading-snug">
+            <a href="{% url 'blog_detail' post.slug %}" class="hover:text-[#E61D4E] transition">
+              {{ post.title }}
+            </a>
+          </h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 line-clamp-3">
+            {{ post.excerpt }}
+          </p>
+        </div>
+      </div>
+      <div class="px-6 pb-6">
+        <a href="{% url 'blog_detail' post.slug %}" class="text-sm font-semibold text-[#E61D4E] hover:underline">
+          {% trans "Read Article" %} &rarr;
+        </a>
+      </div>
+    </article>
+    {% empty %}
+    <p class="text-slate-500 dark:text-slate-400 col-span-3">{% trans "No blog posts published yet. Write your first article in the Admin CMS!" %}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Dynamic Publications Section -->
+<section id="publications" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200 dark:border-slate-800/80">
+  <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-8">{% trans "Selected Publications" %}</h2>
+  <div class="space-y-4">
+    {% for pub in publications %}
+    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold text-[#E61D4E]">{{ pub.year }} &bull; {{ pub.venue }}</span>
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mt-1">{{ pub.title }}</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ pub.authors }}</p>
+      </div>
+      {% if pub.paper_url %}
+      <a href="{{ pub.paper_url }}" target="_blank" class="text-sm font-medium text-[#E61D4E] dark:text-rose-400 hover:underline shrink-0">
+        {% trans "Read Paper" %} &rarr;
+      </a>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-slate-500 dark:text-slate-400">{% trans "Add your research papers via the Admin CMS dashboard." %}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Experience & Education Section -->
+<section id="experience" class="max-w-6xl mx-auto px-6 py-16 border-t border-slate-200 dark:border-slate-800/80">
+  <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-8">{% trans "Experience & Education" %}</h2>
+  <div class="space-y-8">
+    {% for item in experiences %}
+    <div class="border-l-2 border-[#E61D4E] pl-6 py-1">
+      <span class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">{{ item.start_date }} — {{ item.end_date }}</span>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">{{ item.title }}</h3>
+      <p class="text-sm text-[#E61D4E] dark:text-rose-400 font-medium">{{ item.organization }} {% if item.location %}&bull; {{ item.location }}{% endif %}</p>
+      {% if item.description_markdown %}
+      <div class="prose prose-sm dark:prose-invert mt-2 text-slate-600 dark:text-slate-300">
+        {{ item.description_markdown|render_markdown }}
+      </div>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-slate-500 dark:text-slate-400">{% trans "Add your career and academic milestones in the Admin CMS." %}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Dynamic Contact Form -->
+<section id="contact" class="max-w-3xl mx-auto px-6 py-20 border-t border-slate-200 dark:border-slate-800/80">
+  <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">{% trans "Get In Touch" %}</h2>
+  <p class="text-slate-500 dark:text-slate-400 text-sm mb-8">{% trans "Send a message directly to my inbox and Telegram." %}</p>
+
+  <div id="contact-container">
+    <form hx-post="{% url 'hx_contact_submit' %}" hx-target="#contact-container" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" name="sender_name" required placeholder="{% trans 'Your Name' %}"
+               class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#E61D4E] focus:outline-none">
+        <input type="email" name="sender_email" required placeholder="{% trans 'Your Email' %}"
+               class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#E61D4E] focus:outline-none">
+      </div>
+      <input type="text" name="subject" required placeholder="{% trans 'Subject' %}"
+             class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#E61D4E] focus:outline-none">
+      <textarea name="message" rows="4" required placeholder="{% trans 'Your Message...' %}"
+                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#E61D4E] focus:outline-none"></textarea>
+      <button type="submit" class="px-8 py-3 rounded-xl bg-[#E61D4E] text-white font-semibold hover:opacity-90 transition cursor-pointer">
+        {% trans "Send Message" %}
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

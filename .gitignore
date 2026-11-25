@@ -1,0 +1,25 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local data and generated files
+*.sqlite3
+backup_*.json
+media/
+staticfiles/
+*.mo
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor and local files
+.vscode/
+*.log

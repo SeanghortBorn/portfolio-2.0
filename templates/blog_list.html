@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Blogs" %} | {{ profile.full_name|default:"Seanghort Born" }}{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-6 py-16">
+  <div class="mb-12">
+    <p class="text-[#E61D4E] font-semibold uppercase tracking-wider text-xs mb-2">{% trans "Articles & Insights" %}</p>
+    <h1 class="text-4xl font-bold text-slate-900 dark:text-white">{% trans "Blog Archive" %}</h1>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for post in blogs %}
+    <article class="bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden hover:border-[#E61D4E] transition shadow-sm flex flex-col justify-between">
+      <div>
+        {% if post.cover_image %}
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+        {% endif %}
+        <div class="p-6">
+          <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-2">
+            <span>{{ post.published_at|date:"M d, Y" }}</span>
+            <span>&bull;</span>
+            <span>{{ post.reading_time_minutes }} {% trans "min read" %}</span>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">
+            <a href="{% url 'blog_detail' post.slug %}" class="hover:text-[#E61D4E] transition">{{ post.title }}</a>
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3">{{ post.excerpt }}</p>
+        </div>
+      </div>
+      <div class="px-6 pb-6">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {% for tag in post.tag_list %}
+          <span class="text-xs bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <a href="{% url 'blog_detail' post.slug %}" class="text-sm font-semibold text-[#E61D4E] hover:underline">
+          {% trans "Read Full Article" %} &rarr;
+        </a>
+      </div>
+    </article>
+    {% empty %}
+    <p class="text-slate-500 dark:text-slate-400">{% trans "No articles published yet." %}</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
