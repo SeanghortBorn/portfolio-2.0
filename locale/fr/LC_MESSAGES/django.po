@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-25 13:06+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
+#: config/settings.py:74
+msgid "English"
+msgstr ""
+
+#: config/settings.py:75
+msgid "ភាសាខ្មែរ"
+msgstr ""
+
+#: config/settings.py:76
+msgid "Français"
+msgstr ""
+
+#: templates/home.html:29
+msgid "About"
+msgstr ""
+
+#: templates/home.html:30
+msgid "Experience"
+msgstr ""
+
+#: templates/home.html:31
+msgid "Projects"
+msgstr ""
+
+#: templates/home.html:33
+msgid "Contact"
+msgstr ""
+
+#: templates/home.html:70
+msgid "Download CV"
+msgstr ""
+
+#: templates/home.html:91
+msgid "About Me"
+msgstr ""
+
+#: templates/home.html:103
+msgid "Featured Projects"
+msgstr ""
+
+#: templates/home.html:104
+msgid "Filter projects by domain"
+msgstr ""
+
+#: templates/home.html:110
+msgid "All"
+msgstr ""
+
+#: templates/home.html:129
+msgid "Selected Publications"
+msgstr ""
+
+#: templates/home.html:140
+msgid "Read Paper"
+msgstr ""
+
+#: templates/home.html:145
+msgid "Add your research paper with Admin CMS dashboard."
+msgstr ""
+
+#: templates/home.html:152
+msgid "Experience & Education"
+msgstr ""
+
+#: templates/home.html:168
+msgid "Add your career and academic milestones in the Admin CMS."
+msgstr ""
+
+#: templates/home.html:175
+msgid "Get In Touch"
+msgstr ""
+
+#: templates/home.html:176
+msgid "Send a message directly to my inbox and Telegram."
+msgstr ""
+
+#: templates/home.html:182
+msgid "Your Name"
+msgstr ""
+
+#: templates/home.html:183
+msgid "Your Email"
+msgstr ""
+
+#: templates/home.html:185
+msgid "Subject"
+msgstr ""
+
+#: templates/home.html:186
+msgid "Your Message..."
+msgstr ""
+
+#: templates/home.html:188
+msgid "Send Message"
+msgstr ""
+
+#: templates/partials/contact_success.html:3
+msgid "Thank you for your reaching out!"
+msgstr ""
+
+#: templates/partials/contact_success.html:4
+msgid "Your message has been received. I will get back to you shortly."
+msgstr ""
+
+#: templates/partials/project_list.html:27
+msgid "Live Demo"
+msgstr ""
+
+#: templates/partials/project_list.html:36
+msgid "No projects found in this category yet."
+msgstr ""
