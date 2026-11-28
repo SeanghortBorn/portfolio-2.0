@@ -20,6 +20,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "core",
+    "django_extensions",
+    "rest_framework",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -32,6 +35,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -66,7 +70,7 @@ DATABASES ={
 # Multi-language (i18n) configuration
 # To add or remove a language in the future, simply edit this languages list!
 # ====================================
-LANGUAGES_CODE = "en"
+LANGUAGE_CODE = "en"
 USE_I18N = True
 USE_TZ = True
 
@@ -100,4 +104,6 @@ TELEGRAM_CHAT_ID = config("TELEGRAM_CHAT_ID", default="")
 # Trust Cloudflare HTTPS proxy headers in production
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+INTERNAL_IPS = ["127.0.0.1"]
 
